@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <app:service xmlns:atom="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns:sword="http://purl.org/net/sword/" xmlns:dcterms="http://purl.org/dc/terms/">
+    <sword:version>1.3</sword:version>
+    <sword:verbose>true</sword:verbose>
+    <sword:noOp>true</sword:noOp>
+    <sword:maxUploadSize>-1</sword:maxUploadSize>
+    <atom:generator uri="http://www.dspace.org/ns/sword/1.3.1" version="1.3"/>
+    <app:workspace>
+    <% @admin_sets_for_user.each do |admin_set| %>
+        <app:collection href="<%= deposit_url(admin_set) %>" >
+          <app:accept>application/zip</app:accept>
+          <sword:acceptPackaging q="1.0">http://purl.org/net/sword-types/METSDSpaceSIP</sword:acceptPackaging>
+        </app:collection>
+    <% end %>
+    </app:workspace>
+  </app:service>
