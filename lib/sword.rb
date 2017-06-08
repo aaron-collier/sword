@@ -1,3 +1,4 @@
+require "net/https"
 require "sword/engine"
 require "sword/log"
 
