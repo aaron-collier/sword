@@ -1,4 +1,5 @@
 require_dependency "sword/application_controller"
+require "sword/log"
 
 module Sword
   class ServicedocumentController < ApplicationController
@@ -18,6 +19,7 @@ module Sword
 
     def http_authenticate
       authenticate_or_request_with_http_basic do |username, password|
+        Sword.config.logger.info "Attempting authentication for: #{username}"
         @user ||= User.find_by_user_key(username)
         !user.nil? && user.valid_password?(password)
       end

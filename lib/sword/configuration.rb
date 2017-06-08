@@ -1,9 +1,10 @@
 module Sword
-  class Engine < ::Rails::Engine
-    isolate_namespace Sword
+  class Configuration
 
+    attr_writer :logger
     def logger
       @logger ||= Sword::Log.new
     end
+
   end
 end
