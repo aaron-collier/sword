@@ -1,0 +1,59 @@
+default: &default
+
+development:
+  <<: *default
+
+  work_type_field: type
+
+  default_type: Work
+
+  type_to_work_map:
+    Thesis: Thesis
+    Dissertation: Dissertation
+    Project: Project
+    Newspaper: Newspaper
+    Article: Publication
+    Poster: Publication
+    Report: Publication
+    Preprint: Publication
+    Technical Report: Publication
+    Working Paper: Publication
+    painting: CreativeWork
+    ephemera: CreativeWork
+    textiles: CreativeWork
+    Empirical Research: CreativeWork
+    Award Materials: CreativeWork
+    photograph: CreativeWork
+    Mixed Media: CreativeWork
+    Other: CreativeWork
+    Creative Works: CreativeWork
+
+  namespace:
+    mets: http://www.loc.gov/METS/
+    epdcx: http://purl.org/eprint/epdcx/2006-11-16/
+
+  bitstreams:
+    xpath: //mets:fileSec/mets:fileGrp[@USE='CONTENT']/mets:file/mets:FLocat[@LOCTYPE='URL']
+
+  xpath_prefix: //mets:dmdSec/mets:mdWrap/mets:xmlData/epdcx:descriptionSet/epdcx:description/epdcx:statement
+
+  # Dublin Core Field Mapping
+  fields:
+    title: # Thesis
+      xpath: "[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/title']/epdcx:valueString"
+      type: Array
+    description: # Thesis
+      xpath: "[@epdcx:propertyURI='http://purl.org/dc/terms/abstract']/epdcx:valueString"
+      type: Array
+    creator:
+      xpath: "[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/creator']/epdcx:valueString"
+      type: Array
+    subject:
+      xpath: "[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/subject']/epdcx:valueString"
+      type: Array
+    type:
+      xpath: "[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/type']/epdcx:valueString"
+      type: Array
+    language:
+      xpath: "[@epdcx:propertyURI='http://purl.org/dc/elements/1.1/language']/epdcx:valueString"
+      type: Array

@@ -6,5 +6,6 @@ class Sword::ConfigGenerator < Rails::Generators::Base
 
   def create_initializer_config_file
     copy_file 'config/sword.rb', 'config/initializers/sword.rb'
+    copy_file 'config/sword_ingest.yml', 'config/sword_ingest.yml'
   end
 end

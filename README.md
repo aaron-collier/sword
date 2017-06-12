@@ -2,7 +2,6 @@
 Short description and motivation.
 
 ## Usage
-How to use my plugin.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -19,6 +18,16 @@ $ bundle
 Or install it yourself as:
 ```bash
 $ gem install sword
+```
+
+Install configs
+```bash
+$ rails generate sword:config
+```
+
+Add routes to config/routes.rb
+```ruby
+mount Sword::Engine => "/sword"
 ```
 
 ## Contributing
