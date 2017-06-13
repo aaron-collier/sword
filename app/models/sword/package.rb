@@ -6,8 +6,18 @@ module Sword
     attr_reader :files
     attr_reader :path
 
+    def initialize(args)
+      @filename = args[:filename]
+      unzip
+      mets
+    end
+
     def files
       @files ||= []
+    end
+
+    def mets
+      @mets ||= Mets.new(xml: Nokogiri::XML(File.open(File.join(@path,'mets.xml'))))
     end
 
     def unzip
@@ -31,6 +41,7 @@ module Sword
     private
 
     def initialize_directory(dir)
+      Sword.config.logger.info "Creating directory: #{dir}"
       Dir.mkdir dir unless Dir.exist?(dir)
       return dir
     end

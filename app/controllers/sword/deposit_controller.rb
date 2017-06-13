@@ -22,32 +22,33 @@ module Sword
           f.write(request.raw_post)
         end
         p = Package.new(filename: filename)
+
         Sword.config.logger.info "#{p.filename} successfully uploaded"
-        p.unzip
         Sword.config.logger.info "Mets file at #{p.path}"
 
-        mets_data = Mets.new(xml: Nokogiri::XML(File.open(File.join(p.path,'mets.xml'))))
+#        mets_data = Mets.new(xml: Nokogiri::XML(File.open(File.join(p.path,'mets.xml'))))
 
-        Sword.config.ingest['fields'].each do |field|
-          Sword.config.logger.info "Looking for: #{field[0]}"
-          metadata = mets_data.xml.xpath("#{Sword.config.ingest['xpath_prefix']}#{field[1]['xpath']}",Sword.config.ingest['namespace'])
-          metadata.each do |metadata_string|
-            Sword.config.logger.info "Metadata found: #{metadata_string.inner_html}"
-            mets_data.metadata[field[0]] << metadata_string.inner_html
-          end
-        end
+#        Sword.config.ingest['fields'].each do |field|
+#          Sword.config.logger.info "Looking for: #{field[0]}"
+#          metadata = p.mets.xml.xpath("#{Sword.config.ingest['xpath_prefix']}#{field[1]['xpath']}",Sword.config.ingest['namespace'])
+#          metadata.each do |metadata_string|
+#            Sword.config.logger.info "Metadata found: #{metadata_string.inner_html}"
+#            p.mets.metadata[field[0]] << metadata_string.inner_html
+#          end
+#        end
 
-        mets_data.metadata[:id] = ActiveFedora::Noid::Service.new.mint
-        mets_data.metadata[:visibility] = "open"
+        p.mets.metadata[:id] = ActiveFedora::Noid::Service.new.mint
+        p.mets.metadata[:visibility] = "open"
 
-        Sword.config.logger.info mets_data.metadata
+        Sword.config.logger.info "Creating item with id: #{p.mets.metadata[:id]}"
+#        Sword.config.logger.info mets_data.metadata
 
-        w = Work.new(mets_data.metadata)
+        w = Work.new(p.mets.metadata)
         w.apply_depositor_metadata("acollier@calstate.edu")
         w.save
 
         uploaded_files = Array.new()
-        bitstreams = mets_data.xml.xpath(Sword.config.ingest['bitstreams']['xpath'],Sword.config.ingest['namespace'])
+        bitstreams = p.mets.xml.xpath(Sword.config.ingest['bitstreams']['xpath'],Sword.config.ingest['namespace'])
         bitstreams.each do |bitstream|
           Sword.config.logger.info File.join(p.path,bitstream['xlink:href'])
           hyrax_file = Hyrax::UploadedFile.create(file: File.open(File.join(p.path,bitstream['xlink:href'])))
