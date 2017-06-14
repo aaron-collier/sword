@@ -14,7 +14,6 @@ module Sword
 
       # TODO: This response is temporary, the 200 response should only come
       # after the item has been successfully ingested into the IR
-      render :status => 200, :text => "file uploaded successfully"
 
       filename = request.headers["Content-disposition"].split('=').last
       unless filename.nil?
@@ -22,12 +21,16 @@ module Sword
           f.write(request.raw_post)
         end
 
-        p = Package.new(filename: filename)
+        @sword_package = Package.new(filename: filename)
 
-        Sword.config.logger.info "#{p.filename} successfully uploaded"
+        Sword.config.logger.info "#{@sword_package.filename} successfully uploaded"
 
-        Sword.config.logger.info "Creating item with id: #{p.work.id}"
+        Sword.config.logger.info "Creating item with id: #{@sword_package.work.id}"
 
+        @work = @sword_package.work
+        # @work_url = app.hyrax_work_path(@work)
+
+        render "index.xml.erb"
       end
     end
   end

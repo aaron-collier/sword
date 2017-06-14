@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sword="http://purl.org/net/sword/">
+   <atom:id><%= @work.id %></atom:id>
+   <atom:author>
+      <atom:name>acollier@calstate.edu</atom:name>
+   </atom:author>
+   <atom:content type="application/zip" src=""/>
+   <atom:link href="" rel="part" type="application/pdf"/>
+   <atom:link href="" rel="alternate" type="text/html"/>
+   <atom:published></atom:published>
+   <atom:rights type="text"></atom:rights>
+   <% @work.description.each do |desc| %>
+   <atom:summary type="text"><%= desc %></atom:summary>
+   <% end %>
+   <% @work.title.each do |title| %>
+   <atom:title type="text"><%= title %></atom:title>
+   <% end %>
+   <atom:updated></atom:updated>
+   <sword:treatment></sword:treatment>
+   <sword:verboseDescription></sword:verboseDescription>
+   <sword:noOp>false</sword:noOp>
+   <sword:userAgent>curl/7.51.0</sword:userAgent>
+   <sword:packaging></sword:packaging>
+</atom:entry>
